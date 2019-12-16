@@ -1,20 +1,19 @@
-INSTRUCTION
+WHEN YOU START NODE APP "WELCOME MESSAGE WILL BE DISPLAYING"
 
-1. Create a MySQL Database called bamazon.
+ THEN IT WILL GIVE YOU THREE OPTIONS WHICH IS
 
-2. Then create a Table inside of that database called products.
-    item_id (unique id for each product)
+ ---"Would you like to see poducts?"
+ ---"Which Number of the product would like to buy?"
+ ---"How many unites would you like to buy?" 
 
-    product_name (Name of product)
+1st option take you to a mysql database table which is display whole storage products are selling to
 
-    department_name
+2nd option take you to a input part which is requires that user enter id of product wants to buy
 
-    price (cost to customer)
+        *once enter the id number will display the current product info which are 
+        "name of product, "category of product, "price of product", "unites of product"
 
-    stock_quantity (how much of the product is available in stores)
+3rd option take you to a input part that requires user enter units of product wants to buy
 
-3. Populate this database with around 10 different products. (i.e. Insert "mock" data rows into this database and table).
-4. The app should then prompt users with two messages.
-
-The first should ask them the ID of the product they would like to buy.
-The second message should ask how many units of the product they would like to buy.
+        *once enter the number of units will display
+        "price", "how many units left in store"
