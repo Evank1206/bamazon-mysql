@@ -13,10 +13,10 @@ const connection = mysql.createConnection({
     database: "bamazon"
 });
 
-    connection.connect( err =>{
-        if(err) throw err;
-        console.log(`connection connected: ${connection.threadId}`);
-    });
+// connection.connect( err =>{
+//         if(err) throw err;
+//         console.log(`connection connected: ${connection.threadId}`);
+//     });
 // see product list option function 
 seeProducts = () =>{
     connection.query("SELECT * FROM products", (err, res) => {
@@ -28,19 +28,17 @@ seeProducts = () =>{
 // user choose the id of products function
 productID = () =>{
     inquirer.prompt({
-        name: "user",
+        name: "quantity",
         type: "input",
         message: "Enter the number of products, You want to buy?!"
     }).then( res => {
-        // console.log(res);
-    connection.query(`SELECT * FROM products WHERE id = 9`, (res, err) => {
-        if(err) throw err;
-        console.table(res);
-            
+        console.log(res.quantity);
+        connection.query(`SELECT * FROM products WHERE ?`, {id:res.quantity}, (err, result) => {
+            if (err) throw err;
+            console.table(result);
         });
     });
 }
-
 // unit of function
 units = () =>{
     inquirer.prompt({
@@ -48,11 +46,16 @@ units = () =>{
         type: "input",
         message: "Enter how many unit do you want?"
     }).then(res => {
-        console.log(res);
+        // console.log(res);
+        connection.query(`SELECT * FROM products WHERE ?`, {stock_quantity:res.unit}, (err, res) =>{
+            if(err) throw err;
+            console.log(res);
+            
+        })
+
         
     });
 }
-
 // bamazon welcome prompt
 promptStart = () =>{
     inquirer.prompt({
@@ -69,7 +72,6 @@ promptStart = () =>{
             productID();
         }else{
             units();
-
         }
         
     })
