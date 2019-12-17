@@ -22,6 +22,9 @@ seeProducts = () =>{
     connection.query("SELECT * FROM products", (err, res) => {
         if (err) throw err;
         console.table(res);
+        productID();
+        
+        
 
 });
 }
@@ -36,6 +39,7 @@ productID = () =>{
         connection.query(`SELECT * FROM products WHERE ?`, {id:res.quantity}, (err, result) => {
             if (err) throw err;
             console.table(result);
+            units();
         });
     });
 }
@@ -50,6 +54,12 @@ units = () =>{
         connection.query(`SELECT * FROM products WHERE ?`, {stock_quantity:res.unit}, (err, res) =>{
             if(err) throw err;
             console.log(res);
+            // эндээс үргэлжилжилэх
+        connection.query(`SELECT * FROM products WHERE ?`, {price:res.unit}, (err, res) =>{
+            if(err) throw err; 
+            console.log(res);
+            
+        });
             
         })
 
