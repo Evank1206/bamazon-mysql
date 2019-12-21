@@ -13,10 +13,10 @@ const connection = mysql.createConnection({
     database: "bamazon"
 });
 
-// connection.connect( err =>{
-//         if(err) throw err;
-//         console.log(`connection connected: ${connection.threadId}`);
-//     });
+connection.connect( err =>{
+        if(err) throw err;
+        console.log(`connection connected: ${connection.threadId}`);
+    });
 // see product list option function 
 seeProducts = () =>{
     connection.query("SELECT * FROM products", (err, res) => {
@@ -24,8 +24,6 @@ seeProducts = () =>{
         console.table(res);
         productID();
         
-        
-
 });
 }
 // user choose the id of products function
@@ -35,37 +33,40 @@ productID = () =>{
         type: "input",
         message: "Enter the number of products, You want to buy?!"
     }).then( res => {
-        console.log(res.quantity);
+        // console.log(res.quantity);
         connection.query(`SELECT * FROM products WHERE ?`, {id:res.quantity}, (err, result) => {
+            // var number = res.quantity;
             if (err) throw err;
-            console.table(result);
-            units();
+            if(result <= 0 || result >= 10){
+                console.log("(^o^) W-T-F lol try again!(*<>*)");
+                productID();
+            }else{
+                console.table(result);
+                units(res.quantity);
+            } 
         });
     });
 }
 // unit of function
-units = () =>{
+units = (num) =>{
     inquirer.prompt({
         name: "unit",
         type: "input",
-        message: "Enter how many unit do you want?"
+        message: "Enter how many units do you want?"
     }).then(res => {
-        // console.log(res);
-        connection.query(`SELECT * FROM products WHERE ?`, {stock_quantity:res.unit}, (err, res) =>{
+        // console.log(res.unit);
+        connection.query(`SELECT stock_quantity FROM products WHERE ?`, {id:num}, function(err, result){
             if(err) throw err;
-            console.log(res);
-            // эндээс үргэлжилжилэх
-        connection.query(`SELECT * FROM products WHERE ?`, {price:res.unit}, (err, res) =>{
-            if(err) throw err; 
-            console.log(res);
-            
-        });
-            
-        })
+            console.table(result);
+        // connection.query('UPDATE stock_quantity SET ? WHERE ?', {id:num} * {id:res.unit},  (err, res) => {
+        //     if (err) throw err;
+        //     console.log(res);
+        //     }); 
 
-        
+        });
     });
-}
+};
+
 // bamazon welcome prompt
 promptStart = () =>{
     inquirer.prompt({
